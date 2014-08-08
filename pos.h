@@ -26,7 +26,9 @@ class pos_t final {
 
   /* Write a human-readable version. */
   friend std::ostream &operator<<(std::ostream &strm, const pos_t &that) {
-    return strm << that.line_number << ", " << that.col_number;
+    return strm
+        << "line " << that.line_number
+        << ", col " << that.col_number;
   }
 
   private:

@@ -42,8 +42,9 @@ class lexer_t final {
   /* Used by our public lex function. */
   std::vector<token_t> lex() {
     std::vector<token_t> tokens;
-    enum { start, name } state = start;
+    enum { start, name, comment } state = start;
     const char *anchor = nullptr;
+    pos_t anchor_pos;
     bool go = true;
     do {
       char c = peek();
@@ -90,6 +91,11 @@ class lexer_t final {
                   pos, token_t::single_string, lex_string());
               break;
             }
+            case '-': {
+              pop();
+              state = comment;
+              break;
+            }
             default: {
               if (isspace(c)) {
                 pop();
@@ -97,6 +103,7 @@ class lexer_t final {
               }
               if (isalpha(c) || c == '_') {
                 anchor = cursor;
+                anchor_pos = pos;
                 pop();
                 state = name;
                 break;
@@ -122,10 +129,17 @@ class lexer_t final {
             };
             auto iter = keywords.find(text);
             if (iter != keywords.end()) {
-              tokens.emplace_back(pos, iter->second);
+              tokens.emplace_back(anchor_pos, iter->second);
             } else {
-              tokens.emplace_back(pos, token_t::name, std::move(text));
+              tokens.emplace_back(anchor_pos, token_t::name, std::move(text));
             }
+            state = start;
+          }
+          break;
+        }
+        case comment: {
+          pop();
+          if (!c || c == '\n') {
             state = start;
           }
           break;
@@ -213,6 +227,7 @@ class lexer_t final {
         case '\n': {
           ++next_cursor;
           next_pos.next_line();
+          break;
         }
         default: {
           ++next_cursor;
