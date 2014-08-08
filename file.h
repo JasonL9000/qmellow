@@ -1,9 +1,11 @@
 #pragma once
 
+#include <regex>
 #include <string>
 #include <vector>
 #include "match.h"
 #include "result.h"
+#include "utils.h"
 
 namespace qmellow {
 
@@ -13,6 +15,10 @@ class file_t {
 
   /* Borrow this type. */
   using cause_t = match_t::cause_t;
+
+  /* Read the context of the file into memory. */
+  explicit file_t(const std::string &path)
+      : text(read_whole_file(path)) {}
 
   /* TODO */
   result_t match_anchor(
@@ -61,6 +67,11 @@ class file_t {
     result_t result;
     return std::move(result);
   }
+
+  private:
+
+  /* The full text of the file. */
+  std::string text;
 
 };  // file_t
 
