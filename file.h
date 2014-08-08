@@ -18,7 +18,12 @@ class file_t {
 
   /* Read the context of the file into memory. */
   explicit file_t(const std::string &path)
-      : text(read_whole_file(path)) {}
+      : path(path), text(read_whole_file(path)) {}
+
+  /* The path from which the file was loaded. */
+  const std::string &get_path() const noexcept {
+    return path;
+  }
 
   /* TODO */
   result_t match_anchor(
@@ -69,6 +74,9 @@ class file_t {
   }
 
   private:
+
+  /* See accessor. */
+  std::string path;
 
   /* The full text of the file. */
   std::string text;
