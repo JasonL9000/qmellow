@@ -1,7 +1,6 @@
 #pragma once
 
 #include <algorithm>
-#include <ostream>
 #include <set>
 #include <utility>
 #include "match.h"
@@ -45,15 +44,14 @@ class result_t final {
     matches.insert(std::move(match));
   }
 
-  /* Write a human-readable description of the result, including whether this
-     is a match or non-match and all the individual reasons for that
-     evaluation. */
-  void write(std::ostream &strm) const {
-    strm << (success ? "match" : "no match") << std::endl;
-    for (auto &match: matches) {
-      match.write(strm);
-      strm << std::endl;
-    }
+  /* The individual reasons for our success or failure as a match. */
+  const matches_t &get_matches() const noexcept {
+    return matches;
+  }
+
+  /* True iff. we're a match. */
+  bool is_match() const noexcept {
+    return success;
   }
 
   private:
@@ -73,10 +71,10 @@ class result_t final {
         std::inserter(matches, matches.begin()));
   }
 
-  /* True iff. we're a match. */
+  /* See accessor. */
   bool success;
 
-  /* The individual reasons for our success or failure as a match. */
+  /* See accessor. */
   matches_t matches;
 
 };  // result_t

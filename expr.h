@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <ostream>
+#include <sstream>
 #include <string>
 #include <utility>
 #include <vector>
@@ -37,14 +38,25 @@ class leaf_t
   public:
 
   /* Satisfy our duty as a cause of a match */
-  virtual void write(std::ostream &strm) const override final {
-    pretty_print(strm);
+  virtual const std::string &get_desc() const override final {
+    if (desc.empty()) {
+      std::ostringstream strm;
+      pretty_print(strm);
+      desc = strm.str();
+    }
+    return desc;
   }
 
   protected:
 
   /* Do-little. */
   leaf_t() {}
+
+  private:
+
+  /* Empty until get_desc is called, then it contains our pretty-printed
+     self. */
+  mutable std::string desc;
 
 };  // leaf_t
 

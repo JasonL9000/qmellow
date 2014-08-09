@@ -1,6 +1,6 @@
 #pragma once
 
-#include <ostream>
+#include <string>
 
 namespace qmellow {
 
@@ -13,7 +13,7 @@ class match_t final {
     public:
 
     /* Override to describe the cause. */
-    virtual void write(std::ostream &strm) const = 0;
+    virtual const std::string &get_desc() const = 0;
 
     protected:
 
@@ -26,8 +26,17 @@ class match_t final {
   };  // match_t::cause_t;
 
   /* Cache the arguments. */
-  explicit match_t(int line_number, const cause_t *cause)
-      : line_number(line_number), cause(cause) {}
+  explicit match_t(
+        const cause_t *cause, const std::string &sub_file_path,
+        int line_number, const std::string &line_text)
+      : cause(cause), sub_file_path(sub_file_path),
+        line_number(line_number), line_text(line_text) {}
+
+  /* Cache the arguments. */
+  explicit match_t(
+        const cause_t *cause,
+        int line_number, const std::string &line_text)
+      : cause(cause), line_number(line_number), line_text(line_text) {}
 
   /* Strict weak ordering by line number, then by cause. */
   bool operator<(const match_t &that) const {
@@ -35,21 +44,43 @@ class match_t final {
         || (line_number == that.line_number && cause < that.cause);
   }
 
-  /* Write a human-readable description of the match, giving the line number
-     and the cause-expression which matched. */
-  void write(std::ostream &strm) const {
-    strm << line_number << ", [";
-    cause->write(strm);
-    strm << ']';
+  /* A string describing the cause of the match. */
+  const std::string &get_cause_desc() const {
+    return cause->get_desc();
+  }
+
+  /* The number of the line in the subject (or sub-file) on which the match
+     occurred. */
+  int get_line_number() const noexcept {
+    return line_number;
+  }
+
+  /* The text of the line in the subject (or sub-file) on which the match
+     occurred. */
+  const std::string &get_line_text() const noexcept {
+    return line_text;
+  }
+
+  /* The sub-file (such as server-side include, a CSS, or JS file) in which
+     the match occurred.  If the match occurred in the subject file, this
+     string will be empty. */
+  const std::string &get_sub_file_path() const noexcept {
+    return sub_file_path;
   }
 
   private:
 
-  /* The line number of the subject file on which the match occurred. */
+  /* The cause of this match. */
+  const cause_t *cause;
+
+  /* See accessor. */
+  std::string sub_file_path;
+
+  /* See accessor. */
   int line_number;
 
-  /* The cause of this matched. */
-  const cause_t *cause;
+  /* See accessor. */
+  std::string line_text;
 
 };  // match_t
 
