@@ -109,11 +109,9 @@ class parser_t final {
           auto texts = parse_dotted_names();
           if (!try_match_token({ token_t::slash })) {
             if (texts.back() == "css") {
-              texts.pop_back();
               write_dotted_names(strm, texts);
               expr = make_unique<css_t>(strm.str());
             } else if (texts.back() == "js") {
-              texts.pop_back();
               write_dotted_names(strm, texts);
               expr = make_unique<js_t>(strm.str());
             } else if (texts.back() == "png") {

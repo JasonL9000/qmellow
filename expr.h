@@ -239,7 +239,7 @@ class css_t final
 
   /* Pretty-print the expression. */
   virtual void pretty_print(std::ostream &strm) const override {
-    strm << text << ".css";
+    strm << text;
   }
 
   private:
@@ -317,7 +317,7 @@ class js_t final
 
   /* Pretty-print the expression. */
   virtual void pretty_print(std::ostream &strm) const override {
-    strm << text << ".js";
+    strm << text;
   }
 
   private:
