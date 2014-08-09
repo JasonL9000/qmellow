@@ -67,6 +67,13 @@ class file_t {
   }
 
   /* TODO */
+  result_t match_image(
+        const cause_t *cause, const std::string &text) const {
+    result_t result;
+    return std::move(result);
+  }
+
+  /* TODO */
   result_t match_js(
         const cause_t *cause, const std::string &text) const {
     result_t result;

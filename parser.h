@@ -116,6 +116,18 @@ class parser_t final {
               texts.pop_back();
               write_dotted_names(strm, texts);
               expr = make_unique<js_t>(strm.str());
+            } else if (texts.back() == "png") {
+              write_dotted_names(strm, texts);
+              expr = make_unique<image_t>(strm.str());
+            } else if (texts.back() == "jpg") {
+              write_dotted_names(strm, texts);
+              expr = make_unique<image_t>(strm.str());
+            } else if (texts.back() == "svg") {
+              write_dotted_names(strm, texts);
+              expr = make_unique<image_t>(strm.str());
+            } else if (texts.back() == "gif") {
+              write_dotted_names(strm, texts);
+              expr = make_unique<image_t>(strm.str());
             } else {
               write_dotted_names(strm, texts);
               expr = make_unique<anchor_t>(strm.str());

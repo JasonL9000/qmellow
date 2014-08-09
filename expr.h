@@ -263,6 +263,32 @@ class css_id_t final
 
 };  // css_id_t
 
+/* Match an image. */
+class image_t final
+    : public leaf_t {
+  public:
+
+  /* Cache the text to match. */
+  image_t(std::string &&text)
+      : text(std::move(text)) {}
+
+  /* Evaluate the expression on the subject file. */
+  virtual result_t eval(const file_t &file) const override {
+    return file.match_image(this, text);
+  }
+
+  /* Pretty-print the expression. */
+  virtual void pretty_print(std::ostream &strm) const override {
+    strm << text;
+  }
+
+  private:
+
+  /* The text to match.  It will start with a slash. */
+  std::string text;
+
+};  // image_t
+
 /* Match JS. */
 class js_t final
     : public leaf_t {
