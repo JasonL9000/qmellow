@@ -3,35 +3,40 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "file.h"
-#include "translate.h"
-#include "utils.h"
+#include "repl.h"
 
 using namespace std;
 using namespace qmellow;
 
-int main(int argc, char *argv[]) {
-  int result = EXIT_SUCCESS;
-  try {
-    vector<file_t> files;
+/* The application itself. */
+class app_t final {
+  public:
+
+  /* Process the command line and prepare to run. */
+  app_t(int argc, char *argv[]) {
     for (int i = 1; i < argc; ++i) {
-      files.emplace_back(argv[i]);
+      paths.emplace_back(argv[i]);
     }
-    string line;
-    for (;;) {
-      cout << "qmellow: ";
-      getline(cin, line);
-      try {
-        auto expr = translate(line.c_str());
-        for (const auto &file: files) {
-          cout << file.get_path() << ':' << endl;
-          expr->eval(file).write(cout);
-        }
-      } catch (exception &ex) {
-        cout << ex.what() << endl;
-      }
-    }
-  } catch (exception &ex) {
+    cout << "loaded " << (argc - 1) << " file(s)" << endl;
+  }
+
+  /* Run. */
+  int operator()() {
+    return (!paths.empty()) ? (repl_t(paths)()) : EXIT_SUCCESS;
+  }
+
+  private:
+
+  /* The paths of the subject files to load. */
+  vector<string> paths;
+
+};  // app_t
+
+int main(int argc, char *argv[]) {
+  int result;
+  try {
+    result = app_t(argc, argv)();
+  } catch (const exception &ex) {
     cerr << ex.what() << endl;
     result = EXIT_FAILURE;
   }

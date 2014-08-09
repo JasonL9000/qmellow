@@ -19,7 +19,7 @@ inline std::unique_ptr<obj_t> make_unique(args_t &&... args) {
 }
 
 /* Read a while file into a string. */
-std::string read_whole_file(const std::string &path) {
+inline std::string read_whole_file(const std::string &path) {
   try {
     std::ifstream strm(path);
     strm.exceptions(std::ifstream::failbit | std::ifstream::badbit);

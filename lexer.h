@@ -28,16 +28,17 @@ class lexer_t final {
   };  // lexer_t::error_t
 
   /* Convert the given source text into a vector of tokens, ending with an
-     end token. */
-  static std::vector<token_t> lex(const char *next_cursor) {
-    return lexer_t(next_cursor).lex();
+     end token.  We'll start at pos (1, 1) unless told otherwise. */
+  static std::vector<token_t> lex(
+      const std::string &text, const pos_t &pos = pos_t()) {
+    return lexer_t(text.c_str(), pos).lex();
   }
 
   private:
 
   /* Used by our public lex function. */
-  lexer_t(const char *next_cursor)
-      : next_cursor(next_cursor), is_ready(false) {}
+  lexer_t(const char *cursor, const pos_t &pos)
+      : next_cursor(cursor), next_pos(pos), is_ready(false) {}
 
   /* Used by our public lex function. */
   std::vector<token_t> lex() {
