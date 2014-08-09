@@ -1,6 +1,6 @@
 #pragma once
 
-#include <regex>
+#include <set>
 #include <string>
 #include <vector>
 #include "match.h"
@@ -16,77 +16,75 @@ class file_t {
   /* Borrow this type. */
   using cause_t = match_t::cause_t;
 
-  /* Read the context of the file into memory. */
-  explicit file_t(const std::string &path)
-      : path(path), text(read_whole_file(path)) {}
+  /* TODO: construct from some JS thing. */
+  file_t() {}
 
-  /* The path from which the file was loaded. */
-  const std::string &get_path() const noexcept {
-    return path;
-  }
-
-  /* TODO */
+  /* Find matching anchors. */
   result_t match_anchor(
         const cause_t *cause, const std::string &text) const {
     result_t result;
+    /* TODO: call result.add(match_t(...)) for each match. */
     return std::move(result);
   }
 
-  /* TODO */
+  /* Find matching strings without regard to case. */
   result_t match_case_insensitive_string(
         const cause_t *cause, const std::string &text) const {
     result_t result;
+    /* TODO: call result.add(match_t(...)) for each match. */
     return std::move(result);
   }
 
-  /* TODO */
+  /* Find matching strings. */
   result_t match_case_sensitive_string(
         const cause_t *cause, const std::string &text) const {
     result_t result;
+    /* TODO: call result.add(match_t(...)) for each match. */
     return std::move(result);
   }
 
-  /* TODO */
+  /* Find matching class names (within a single element). */
   result_t match_class_names(
         const cause_t *cause, const std::vector<std::string> &texts) const {
     result_t result;
+    /* TODO: call result.add(match_t(...)) for each match. */
     return std::move(result);
   }
 
-  /* TODO */
+  /* Find matching CSS includes. */
   result_t match_css(
         const cause_t *cause, const std::string &text) const {
     result_t result;
+    /* TODO: call result.add(match_t(...)) for each match. */
     return std::move(result);
   }
 
-  /* TODO */
+  /* Find matching CSS ids. */
   result_t match_css_id(const cause_t *cause, const std::string &text) const {
     result_t result;
+    /* TODO: call result.add(match_t(...)) for each match. */
     return std::move(result);
   }
 
-  /* TODO */
+  /* Find matching images. */
   result_t match_image(
         const cause_t *cause, const std::string &text) const {
     result_t result;
+    /* TODO: call result.add(match_t(...)) for each match. */
     return std::move(result);
   }
 
-  /* TODO */
+  /* Find matching JS includes. */
   result_t match_js(
         const cause_t *cause, const std::string &text) const {
     result_t result;
+    /* TODO: call result.add(match_t(...)) for each match. */
     return std::move(result);
   }
 
   private:
 
-  /* See accessor. */
-  std::string path;
-
-  /* The full text of the file. */
-  std::string text;
+  /* TODO: add state you'll use in the match functions, above. */
 
 };  // file_t
 
